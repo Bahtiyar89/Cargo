@@ -3,6 +3,8 @@ import * as dotenv from 'dotenv';
 import express from 'express';
 import morgan from 'morgan';
 import mongoose from 'mongoose';
+//import { body, validationResult } from 'express-validator';
+
 import jobRouter from './routes/jobRouter.js';
 
 // middleware
@@ -19,7 +21,26 @@ const app = express();
 app.use(express.json());
 
 app.use('/api/v1/jobs', jobRouter);
+/*
+app.post(
+  '/api/v1/test',
+  [body('name').notEmpty().withMessage('name is required')],
+  (req, res) => {
+    const errors = validationResult(req);
+    console.log('errors ', errors);
+    console.log('errors.isEmpty() ', errors.isEmpty());
 
+    if (!errors.isEmpty()) {
+      const errorMessages = errors.array().map((error) => error.msg);
+      return res.status(400).json({ errors: errorMessages });
+    }
+  },
+  (req, res) => {
+    const { name } = req.body;
+    res.json({ msg: `hello ${name}` });
+  }
+);
+*/
 app.use('*', (req, res) => {
   res.status(404).json({ msg: 'not found' });
 });
