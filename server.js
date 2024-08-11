@@ -6,7 +6,7 @@ import mongoose from 'mongoose';
 //import { body, validationResult } from 'express-validator';
 
 import jobRouter from './routes/jobRouter.js';
-
+import authRouter from './routes/authRouter.js';
 // middleware
 import errorHandlerMiddleware from './middleware/errorHandlerMiddleware.js';
 //import { authenticateUser } from './middleware/authMiddleware.js';
@@ -21,6 +21,7 @@ const app = express();
 app.use(express.json());
 
 app.use('/api/v1/jobs', jobRouter);
+app.use('/api/v1/auth', authRouter);
 /*
 app.post(
   '/api/v1/test',

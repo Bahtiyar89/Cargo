@@ -7,6 +7,7 @@ import {
 import { JOB_STATUS, JOB_TYPE } from '../utils/constants.js';
 import mongoose from 'mongoose';
 import JobModel from '../models/JobModel.js';
+import UserModel from '../models/UserModel.js';
 //import User from '../models/UserModel.js';
 
 const withValidationErrors = (validateValues) => {
@@ -57,7 +58,7 @@ export const validateIdParam = withValidationErrors([
       throw new UnauthorizedError('not authorized to access this route');
   }),
 ]);
-/*
+
 export const validateRegisterInput = withValidationErrors([
   body('name').notEmpty().withMessage('name is required'),
   body('email')
@@ -66,7 +67,7 @@ export const validateRegisterInput = withValidationErrors([
     .isEmail()
     .withMessage('invalid email format')
     .custom(async (email) => {
-      const user = await User.findOne({ email });
+      const user = await UserModel.findOne({ email });
       if (user) {
         throw new BadRequestError('email already exists');
       }
@@ -106,4 +107,3 @@ export const validateUpdateUserInput = withValidationErrors([
   body('location').notEmpty().withMessage('location is required'),
   body('lastName').notEmpty().withMessage('last name is required'),
 ]);
-*/
