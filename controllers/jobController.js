@@ -10,12 +10,13 @@ let jobs = [
 
 export const getAllJobs = async (req, res) => {
   const jobs = await JobModel.find({});
+
   res.status(StatusCodes.OK).json({ jobs });
 };
 
 export const newJob = async (req, res) => {
-  const { company, position } = req.body;
-  const job = await JobModel.create({ company, position });
+  req.body.createdBy = req.user.userId;
+  const job = await JobModel.create(req.body);
   res.status(StatusCodes.CREATED).json({ job });
   /*
   if (!company || !position) {
