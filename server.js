@@ -22,15 +22,24 @@ import path from 'path';
 import errorHandlerMiddleware from './middleware/errorHandlerMiddleware.js';
 import { authenticateUser } from './middleware/authMiddleware.js';
 
+const app = express();
+dotenv.config();
+
+console.log('process.env: ', process.env.MONGO_URL);
+console.log('process.env: ', process.env.CLOUD_API_KEY);
+
+cloudinary.config({
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.CLOUD_API_KEY,
+  api_secret: process.env.CLOUD_API_SECRET,
+});
+
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
 
-dotenv.config();
-
-const app = express();
 app.use(express.json());
 app.use(cookieParser());
 app.use(express.static(path.resolve(__dirname, './public')));
