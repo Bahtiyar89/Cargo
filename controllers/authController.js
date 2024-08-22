@@ -3,7 +3,6 @@ import User from '../models/UserModel.js';
 import { comparePassword, hashPassword } from '../utils/passwordUtils.js';
 import { UnauthenticatedError } from '../errors/customErrors.js';
 import { createJWT } from '../utils/tokenUtils.js';
-import UserModel from '../models/UserModel.js';
 
 export const register = async (req, res) => {
   const isFirstAccount = (await User.countDocuments()) === 0;
@@ -12,11 +11,11 @@ export const register = async (req, res) => {
   const hashedPassword = await hashPassword(req.body.password);
   req.body.password = hashedPassword;
 
-  const user = await UserModel.create(req.body);
+  const user = await User.create(req.body);
   res.status(StatusCodes.CREATED).json({ msg: 'user created' });
 };
 export const login = async (req, res) => {
-  const user = await UserModel.findOne({ email: req.body.email });
+  const user = await User.findOne({ email: req.body.email });
 
   const isValidUser =
     user && (await comparePassword(req.body.password, user.password));
@@ -25,7 +24,7 @@ export const login = async (req, res) => {
 
   const token = createJWT({ userId: user._id, role: user.role });
 
-  const oneDay = 1000 * 60 * 60 * 24; //milliseconds == 1day
+  const oneDay = 1000 * 60 * 60 * 24;
 
   res.cookie('token', token, {
     httpOnly: true,

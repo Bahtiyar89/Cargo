@@ -1,6 +1,5 @@
 import mongoose from 'mongoose';
 import { JOB_STATUS, JOB_TYPE } from '../utils/constants.js';
-
 const JobSchema = new mongoose.Schema(
   {
     company: String,
@@ -9,8 +8,6 @@ const JobSchema = new mongoose.Schema(
       type: String,
       enum: Object.values(JOB_STATUS),
       default: JOB_STATUS.PENDING,
-      //  enum: ['interview', 'declined', 'pending'],
-      //  default: 'pending',
     },
     jobType: {
       type: String,

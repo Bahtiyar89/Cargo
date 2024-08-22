@@ -1,5 +1,5 @@
+import Job from '../models/JobModel.js';
 import { StatusCodes } from 'http-status-codes';
-import JobModel from '../models/JobModel.js';
 import mongoose from 'mongoose';
 import day from 'dayjs';
 
@@ -7,7 +7,7 @@ export const getAllJobs = async (req, res) => {
   const { search, jobStatus, jobType, sort } = req.query;
 
   const queryObject = {
-    // createdBy: req.user.userId,
+    createdBy: req.user.userId,
   };
 
   if (search) {
@@ -16,7 +16,6 @@ export const getAllJobs = async (req, res) => {
       { company: { $regex: search, $options: 'i' } },
     ];
   }
-  console.log('queryObject: ', queryObject);
 
   if (jobStatus && jobStatus !== 'all') {
     queryObject.jobStatus = jobStatus;
@@ -40,44 +39,31 @@ export const getAllJobs = async (req, res) => {
   const limit = Number(req.query.limit) || 10;
   const skip = (page - 1) * limit;
 
-  const jobs = await JobModel.find(queryObject)
+  const jobs = await Job.find(queryObject)
     .sort(sortKey)
     .skip(skip)
     .limit(limit);
 
-  const totalJobs = await JobModel.countDocuments(queryObject);
+  const totalJobs = await Job.countDocuments(queryObject);
   const numOfPages = Math.ceil(totalJobs / limit);
   res
     .status(StatusCodes.OK)
     .json({ totalJobs, numOfPages, currentPage: page, jobs });
 };
 
-export const newJob = async (req, res) => {
+export const createJob = async (req, res) => {
   req.body.createdBy = req.user.userId;
-  const job = await JobModel.create(req.body);
+  const job = await Job.create(req.body);
   res.status(StatusCodes.CREATED).json({ job });
-  /*
-  if (!company || !position) {
-    res.status(400).json({ msg: 'please provide company and position' });
-  }
-  try {
-    const job = await JobModel.create('something');
-    res.status(201).json({ job });
-  } catch (error) {
-    res.status(500).json({ msg: 'server error' });
-  }
-  res.status(201).json({ job });*/
 };
 
 export const getJob = async (req, res) => {
-  const job = await JobModel.findById(req.params.id);
+  const job = await Job.findById(req.params.id);
   res.status(StatusCodes.OK).json({ job });
 };
 
 export const updateJob = async (req, res) => {
-  const { id } = req.params;
-
-  const updatedJob = await JobModel.findByIdAndUpdate(req.params.id, req.body, {
+  const updatedJob = await Job.findByIdAndUpdate(req.params.id, req.body, {
     new: true,
   });
 
@@ -85,20 +71,15 @@ export const updateJob = async (req, res) => {
 };
 
 export const deleteJob = async (req, res) => {
-  const removedJob = await JobModel.findByIdAndDelete(req.params.id);
-
+  const removedJob = await Job.findByIdAndDelete(req.params.id);
   res.status(StatusCodes.OK).json({ msg: 'job deleted', job: removedJob });
 };
 
 export const showStats = async (req, res) => {
-  console.log('eq.user.userId: ', req.user.userId);
-
-  let stats = await JobModel.aggregate([
-    // { $match: { createdBy: new mongoose.Types.ObjectId(req.user.userId) } },
+  let stats = await Job.aggregate([
+    { $match: { createdBy: new mongoose.Types.ObjectId(req.user.userId) } },
     { $group: { _id: '$jobStatus', count: { $sum: 1 } } },
   ]);
-
-  console.log('stats: ', stats);
 
   stats = stats.reduce((acc, curr) => {
     const { _id: title, count } = curr;
@@ -112,7 +93,7 @@ export const showStats = async (req, res) => {
     declined: stats.declined || 0,
   };
 
-  let monthlyApplications = await JobModel.aggregate([
+  let monthlyApplications = await Job.aggregate([
     { $match: { createdBy: new mongoose.Types.ObjectId(req.user.userId) } },
     {
       $group: {
@@ -123,6 +104,7 @@ export const showStats = async (req, res) => {
     { $sort: { '_id.year': -1, '_id.month': -1 } },
     { $limit: 6 },
   ]);
+
   monthlyApplications = monthlyApplications
     .map((item) => {
       const {
@@ -134,6 +116,7 @@ export const showStats = async (req, res) => {
         .month(month - 1)
         .year(year)
         .format('MMM YY');
+
       return { date, count };
     })
     .reverse();

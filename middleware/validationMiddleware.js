@@ -6,9 +6,8 @@ import {
 } from '../errors/customErrors.js';
 import { JOB_STATUS, JOB_TYPE } from '../utils/constants.js';
 import mongoose from 'mongoose';
-import JobModel from '../models/JobModel.js';
-import UserModel from '../models/UserModel.js';
-//import User from '../models/UserModel.js';
+import Job from '../models/JobModel.js';
+import User from '../models/UserModel.js';
 
 const withValidationErrors = (validateValues) => {
   return [
@@ -49,7 +48,7 @@ export const validateIdParam = withValidationErrors([
   param('id').custom(async (value, { req }) => {
     const isValidMongoId = mongoose.Types.ObjectId.isValid(value);
     if (!isValidMongoId) throw new BadRequestError('invalid MongoDB id');
-    const job = await JobModel.findById(value);
+    const job = await Job.findById(value);
     if (!job) throw new NotFoundError(`no job with id ${value}`);
     const isAdmin = req.user.role === 'admin';
     const isOwner = req.user.userId === job.createdBy.toString();
@@ -67,7 +66,7 @@ export const validateRegisterInput = withValidationErrors([
     .isEmail()
     .withMessage('invalid email format')
     .custom(async (email) => {
-      const user = await UserModel.findOne({ email });
+      const user = await User.findOne({ email });
       if (user) {
         throw new BadRequestError('email already exists');
       }
@@ -75,7 +74,7 @@ export const validateRegisterInput = withValidationErrors([
   body('password')
     .notEmpty()
     .withMessage('password is required')
-    .isLength({ min: 3 })
+    .isLength({ min: 8 })
     .withMessage('password must be at least 8 characters long'),
   body('location').notEmpty().withMessage('location is required'),
   body('lastName').notEmpty().withMessage('last name is required'),
@@ -98,7 +97,7 @@ export const validateUpdateUserInput = withValidationErrors([
     .isEmail()
     .withMessage('invalid email format')
     .custom(async (email, { req }) => {
-      const user = await UserModel.findOne({ email });
+      const user = await User.findOne({ email });
       if (user && user._id.toString() !== req.user.userId) {
         throw new BadRequestError('email already exists');
       }

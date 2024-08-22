@@ -1,27 +1,26 @@
 import { Router } from 'express';
+const router = Router();
 import {
   getAllJobs,
-  newJob,
   getJob,
+  createJob,
   updateJob,
   deleteJob,
   showStats,
 } from '../controllers/jobController.js';
 import {
-  validateIdParam,
   validateJobInput,
+  validateIdParam,
 } from '../middleware/validationMiddleware.js';
 import { checkForTestUser } from '../middleware/authMiddleware.js';
 
-const router = Router();
-
-//router.get('/', getAllJobs);
-//router.post('/', newJob);
+// router.get('/',getAllJobs)
+// router.post('/',createJob)
 
 router
   .route('/')
   .get(getAllJobs)
-  .post(checkForTestUser, validateJobInput, newJob);
+  .post(checkForTestUser, validateJobInput, createJob);
 
 router.route('/stats').get(showStats);
 
