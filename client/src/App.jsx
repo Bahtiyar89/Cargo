@@ -15,6 +15,8 @@ import {
   Profile,
   Admin,
   EditJob,
+  AddClient,
+  AllClients,
 } from './pages';
 
 import { action as registerAction } from './pages/Register';
@@ -27,8 +29,12 @@ import { action as editJobAction } from './pages/EditJob';
 import { action as deleteJobAction } from './pages/DeleteJob';
 import { loader as adminLoader } from './pages/Admin';
 import { action as profileAction } from './pages/Profile';
+import { action as addAddClientAction } from './pages/AddClient';
+import { loader as allClientsLoader } from './pages/AllClients';
+import { loader as allClientsLoader2 } from './pages/AllInvoices';
 import { loader as statsLoader } from './pages/Stats';
 import ErrorElement from './components/ErrorElement';
+import AllInvoices from './pages/AllInvoices';
 
 export const checkDefaultTheme = () => {
   const isDarkTheme = localStorage.getItem('darkTheme') === 'true';
@@ -73,6 +79,23 @@ const router = createBrowserRouter([
         children: [
           {
             index: true,
+            element: <AddClient />,
+            action: addAddClientAction(queryClient),
+          },
+          {
+            path: 'all-clients',
+            element: <AllClients />,
+            loader: allClientsLoader(queryClient),
+            errorElement: <ErrorElement />,
+          },
+          {
+            path: 'all-invoices',
+            element: <AllInvoices />,
+            loader: allClientsLoader2(queryClient),
+            errorElement: <ErrorElement />,
+          },
+          {
+            path: 'add-job',
             element: <AddJob />,
             action: addJobAction(queryClient),
           },

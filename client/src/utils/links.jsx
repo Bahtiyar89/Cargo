@@ -8,8 +8,23 @@ import { MdAdminPanelSettings } from 'react-icons/md';
 
 const links = [
   {
-    text: 'add job',
+    text: 'müşteri ekle',
     path: '.',
+    icon: <FaWpforms />,
+  },
+  {
+    text: 'bütün müşteriler',
+    path: 'all-clients',
+    icon: <FaWpforms />,
+  },
+  {
+    text: 'Bütün invoice',
+    path: 'all-invoices',
+    icon: <FaWpforms />,
+  },
+  {
+    text: 'add job',
+    path: 'add-job',
     icon: <FaWpforms />,
   },
   {

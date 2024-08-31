@@ -18,7 +18,7 @@ const withValidationErrors = (validateValues) => {
         const errorMessages = errors.array().map((error) => error.msg);
 
         const firstMessage = errorMessages[0];
-        console.log(Object.getPrototypeOf(firstMessage));
+        console.log('firstMessage', Object.getPrototypeOf(firstMessage));
         if (errorMessages[0].startsWith('no job')) {
           throw new NotFoundError(errorMessages);
         }
