@@ -15,22 +15,30 @@ export const newClient = async (req, res) => {
   res.status(StatusCodes.CREATED).json({ client });
 };
 
-export const getJob = async (req, res) => {
-  const job = await Job.findById(req.params.id);
-  res.status(StatusCodes.OK).json({ job });
+export const getClient = async (req, res) => {
+  const client = await ClientModel.findById(req.params.id);
+  res.status(StatusCodes.OK).json({ client });
 };
 
-export const updateJob = async (req, res) => {
-  const updatedJob = await Job.findByIdAndUpdate(req.params.id, req.body, {
-    new: true,
-  });
+export const updateClient = async (req, res) => {
+  const updatedClient = await ClientModel.findByIdAndUpdate(
+    req.params.id,
+    req.body,
+    {
+      new: true,
+    }
+  );
 
-  res.status(StatusCodes.OK).json({ msg: 'job modified', job: updatedJob });
+  res
+    .status(StatusCodes.OK)
+    .json({ msg: 'client modified', client: updatedClient });
 };
 
-export const deleteJob = async (req, res) => {
-  const removedJob = await Job.findByIdAndDelete(req.params.id);
-  res.status(StatusCodes.OK).json({ msg: 'job deleted', job: removedJob });
+export const deleteClient = async (req, res) => {
+  const removedClient = await ClientModel.findByIdAndDelete(req.params.id);
+  res
+    .status(StatusCodes.OK)
+    .json({ msg: 'client deleted', client: removedClient });
 };
 
 export const showStats = async (req, res) => {

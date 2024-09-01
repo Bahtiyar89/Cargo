@@ -1,32 +1,15 @@
-import React, { Fragment, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FaPen, FaTrash } from 'react-icons/fa';
 import { useAllClientsContext } from '../pages/AllClients';
-import Wrapper from '../assets/wrappers/JobsContainer';
-import { ReactToPrint, useReactToPrint } from 'react-to-print';
-import {
-  CButton,
-  CCard,
-  CCardBody,
-  CCardHeader,
-  CCol,
-  CForm,
-  CFormInput,
-  CRow,
-  CSmartTable,
-  CTable,
-  CTableBody,
-  CTableDataCell,
-  CTableHead,
-  CTableHeaderCell,
-  CTableRow,
-} from '@coreui/react-pro';
+import { Form, useNavigate } from 'react-router-dom';
+import { CButton, CSmartTable } from '@coreui/react-pro';
 import '@coreui/coreui-pro/dist/css/coreui.min.css';
 
 const ClientsContainer = () => {
+  const navigate = useNavigate();
   const { data } = useAllClientsContext();
   const { clients } = data;
   const [items, setItems] = useState([]);
-  const [showPrint, setShowPrint] = useState(false);
 
   useEffect(() => {
     setItems(clients);
@@ -57,11 +40,16 @@ const ClientsContainer = () => {
     {
       key: 'address',
       label: 'Adres',
-      _style: { width: '20%' },
     },
     { key: 'edit', filter: false, sorter: false, label: '' },
+    {
+      key: 'delete',
+      label: '',
+      _style: { width: '1%' },
+      filter: false,
+      sorter: false,
+    },
   ];
-  console.log('showPrint: ', showPrint);
 
   return (
     <CSmartTable
@@ -77,9 +65,9 @@ const ClientsContainer = () => {
       scopedColumns={{
         edit: (item) => {
           return (
-            <Fragment>
+            <td className='py-2'>
               <CButton
-                onClick={() => console.log(item)}
+                onClick={() => navigate(`../edit-client/${item._id}`)}
                 color='primary'
                 variant='outline'
                 shape='square'
@@ -87,16 +75,18 @@ const ClientsContainer = () => {
               >
                 <FaPen />
               </CButton>
-              <CButton
-                onClick={() => console.log(item)}
-                color='primary'
-                variant='outline'
-                shape='square'
-                size='sm'
-              >
-                <FaTrash color={'red'} />
-              </CButton>
-            </Fragment>
+            </td>
+          );
+        },
+        delete: (item) => {
+          return (
+            <td className='py-2'>
+              <Form method='post' action={`../delete-client/${item._id}`}>
+                <button type='submit' className='btn delete-btn'>
+                  <FaTrash color={'red'} />
+                </button>
+              </Form>
+            </td>
           );
         },
       }}

@@ -17,6 +17,7 @@ import {
   EditJob,
   AddClient,
   AllClients,
+  EditClient,
 } from './pages';
 
 import { action as registerAction } from './pages/Register';
@@ -26,7 +27,10 @@ import { action as addJobAction } from './pages/AddJob';
 import { loader as allJobsLoader } from './pages/AllJobs';
 import { loader as editJobLoader } from './pages/EditJob';
 import { action as editJobAction } from './pages/EditJob';
+import { loader as editClientLoader } from './pages/EditClient';
+import { action as editClientAction } from './pages/EditClient';
 import { action as deleteJobAction } from './pages/DeleteJob';
+import { action as deleteClientAction } from './pages/DeleteClient';
 import { loader as adminLoader } from './pages/Admin';
 import { action as profileAction } from './pages/Profile';
 import { action as addAddClientAction } from './pages/AddClient';
@@ -87,6 +91,16 @@ const router = createBrowserRouter([
             element: <AllClients />,
             loader: allClientsLoader(queryClient),
             errorElement: <ErrorElement />,
+          },
+          {
+            path: 'edit-client/:id',
+            element: <EditClient />,
+            loader: editClientLoader(queryClient),
+            action: editClientAction(queryClient),
+          },
+          {
+            path: 'delete-client/:id',
+            action: deleteClientAction(queryClient),
           },
           {
             path: 'all-invoices',

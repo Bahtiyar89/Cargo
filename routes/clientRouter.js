@@ -1,6 +1,12 @@
 import { Router } from 'express';
 const router = Router();
-import { getAllClients, newClient } from '../controllers/clientController.js';
+import {
+  deleteClient,
+  getAllClients,
+  getClient,
+  newClient,
+  updateClient,
+} from '../controllers/clientController.js';
 import {
   validateJobInput,
   validateIdParam,
@@ -9,6 +15,9 @@ import { checkForTestUser } from '../middleware/authMiddleware.js';
 
 router.get('/', getAllClients);
 router.post('/', newClient);
+router.get('/:id', getClient);
+router.patch('/:id', updateClient);
+router.delete('/:id', deleteClient);
 /*
 router
   .route('/')
