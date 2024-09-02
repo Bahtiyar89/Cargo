@@ -23,13 +23,13 @@ const links = [
     icon: <FaWpforms />,
   },
   {
-    text: 'add job',
-    path: 'add-job',
-    icon: <FaWpforms />,
-  },
-  {
     text: 'invoice ekle',
     path: 'add-invoice',
+    icon: <FaWpforms />,
+  },
+  /* {
+    text: 'add job',
+    path: 'add-job',
     icon: <FaWpforms />,
   },
   {
@@ -51,7 +51,7 @@ const links = [
     text: 'admin',
     path: 'admin',
     icon: <MdAdminPanelSettings />,
-  },
+  },*/
 ];
 
 export default links;
