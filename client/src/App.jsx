@@ -18,6 +18,7 @@ import {
   AddClient,
   AllClients,
   EditClient,
+  AddInvoice,
 } from './pages';
 
 import { action as registerAction } from './pages/Register';
@@ -36,6 +37,7 @@ import { action as profileAction } from './pages/Profile';
 import { action as addAddClientAction } from './pages/AddClient';
 import { loader as allClientsLoader } from './pages/AllClients';
 import { loader as allClientsLoader2 } from './pages/AllInvoices';
+import { loader as allClientsLoader3 } from './pages/AddInvoice';
 import { loader as statsLoader } from './pages/Stats';
 import ErrorElement from './components/ErrorElement';
 import AllInvoices from './pages/AllInvoices';
@@ -107,6 +109,11 @@ const router = createBrowserRouter([
             element: <AllInvoices />,
             loader: allClientsLoader2(queryClient),
             errorElement: <ErrorElement />,
+          },
+          {
+            path: 'add-invoice',
+            element: <AddInvoice />,
+            loader: allClientsLoader3(queryClient),
           },
           {
             path: 'add-job',

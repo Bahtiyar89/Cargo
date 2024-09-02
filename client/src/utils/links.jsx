@@ -28,6 +28,11 @@ const links = [
     icon: <FaWpforms />,
   },
   {
+    text: 'invoice ekle',
+    path: 'add-invoice',
+    icon: <FaWpforms />,
+  },
+  {
     text: 'all jobs',
     path: 'all-jobs',
     icon: <MdQueryStats />,

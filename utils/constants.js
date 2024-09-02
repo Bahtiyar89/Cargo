@@ -16,3 +16,10 @@ export const JOB_SORT_BY = {
   ASCENDING: 'a-z',
   DESCENDING: 'z-a',
 };
+
+export const AMBALAC_TYPE = {
+  MIXED_TEXTYLE: 'karışık tekstil',
+  OLDEST_FIRST: 'tagta kesyan makina',
+  ASCENDING: 'a-z',
+  DESCENDING: 'z-a',
+};
