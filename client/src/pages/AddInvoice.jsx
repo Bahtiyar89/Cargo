@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react';
-import { useOutletContext } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useLoaderData } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
+import DatePicker from 'react-datepicker';
+import moment from 'moment';
 import { FormRow, FormRowSelect, SubmitBtn } from '../components';
 import Wrapper from '../assets/wrappers/DashboardFormPage';
 import Select, { components } from 'react-dropdown-select';
@@ -10,6 +12,27 @@ import { Form, redirect } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import customFetch from '../utils/customFetch';
 import styled from 'styled-components';
+import FormRowValue from '../components/FormRowValue';
+import { CButton } from '@coreui/react-pro';
+import { locale } from '../utils/constants';
+
+export const action =
+  (queryClient) =>
+  async ({ request }) => {
+    const formData = await request.formData();
+
+    const data = Object.fromEntries(formData);
+    console.log('data: 3', data);
+    try {
+      await customFetch.post('/invoices', data);
+      queryClient.invalidateQueries(['invoices']);
+      toast.success('Invoice added successfully ');
+      return redirect('/dashboard/all-invoices');
+    } catch (error) {
+      toast.error(error?.response?.data?.msg);
+      return error;
+    }
+  };
 
 const allClientsQuery = (params) => {
   return {
@@ -36,9 +59,18 @@ export const loader =
   };
 
 const AddInvoice = () => {
+  const navigate = useNavigate();
   const { searchValues } = useLoaderData();
+  const [startDate, setStartDate] = useState(new Date());
   const { data } = useQuery(allClientsQuery(searchValues));
-  const [list, setList] = useState([]);
+  const [invoice, setInvoice] = useState({
+    barcod: 'k-' + Math.floor(Math.random() * 100000) + 100,
+    kg: 1,
+    price: 1.3,
+    ambalaj_type: '',
+    receiver_id: '',
+    invoice_date: moment(new Date()).format('DD.MM.YYYY'),
+  });
 
   const getClientOptions = (data) => {
     const clientOptions = data;
@@ -55,12 +87,78 @@ const AddInvoice = () => {
     return out;
   };
 
-  useEffect(() => {
-    // setList(data?.clients);
-  }, [data]);
+  const onInputChange = (o, fieldName) => {
+    setInvoice((prev) => {
+      const varTs = { ...prev };
+      switch (fieldName) {
+        case 'barcod':
+          varTs.barcod = o.value;
+          break;
+        case 'kg':
+          varTs.kg = o.value;
+          varTs.price = (o.value * 1.3).toFixed(2);
+          break;
+        case 'price':
+          varTs.price = o.value;
+          break;
+        case 'ambalaj_type':
+          varTs.ambalaj_type = o.value;
+          break;
+        case 'receiver_id':
+          varTs.receiver_id = o.value;
+          break;
+        default:
+          varTs[fieldName] = o.value;
+      }
+      return varTs;
+    });
+  };
 
-  console.log('list: ', list);
+  const handleDate = (date) => {
+    setStartDate(date);
+    setInvoice((prev) => {
+      let newDate = moment(date).format('DD.MM.YYYY');
 
+      return {
+        ...prev,
+        invoice_date: newDate,
+      };
+    });
+  };
+  console.log('invoice :', invoice.invoice_date);
+
+  const validate = () => {
+    const errors = [];
+    const { ambalaj_type, receiver_id } = invoice;
+    if (ambalaj_type === null || ambalaj_type === undefined || !ambalaj_type) {
+      toast.error('Ambalaj türünü seçin');
+      errors.push('Ambalaj türünü seçin');
+    }
+    if (receiver_id === null || receiver_id === undefined || !receiver_id) {
+      toast.error('Alıcı seçin');
+      errors.push('Alıcı seçin');
+    }
+
+    return errors;
+  };
+
+  const handleSumbit = async () => {
+    let errors = [];
+    errors = validate();
+
+    if (errors === null || errors === undefined || errors.length === 0) {
+      try {
+        await customFetch.post('/invoices', invoice);
+        toast.success('Invoice added successfully ');
+        navigate('/dashboard/all-invoices');
+      } catch (error) {
+        toast.error(error?.response?.data?.msg);
+        return error;
+      }
+    } else {
+      console.log('errors');
+    }
+  };
   return (
     <Wrapper>
       <Form method='post' className='form'>
@@ -69,26 +167,57 @@ const AddInvoice = () => {
           <FormRow
             type='text'
             name='barcod'
-            defaultValue={Math.floor(Math.random() * 100000) + 100}
+            defaultValue={invoice?.barcod}
             labelText={'Barkod'}
+            onChange={(e, o) => onInputChange(e.target, 'barcod')}
           />
-          <FormRow type='text' name='kg' labelText={'kg'} />
-          <FormRow type='text' name='price' labelText={'fiyat'} />
+          <FormRow
+            type='text'
+            name='kg'
+            labelText={'kg'}
+            defaultValue={invoice.kg}
+            onChange={(e, o) => onInputChange(e.target, 'kg')}
+          />
+          <FormRowValue
+            type='text'
+            name='price'
+            labelText={'fiyat'}
+            value={invoice.price}
+            onChange={(e, o) => onInputChange(e.target, 'price')}
+          />
+          <FormRow
+            type='text'
+            name='ambalaj_type'
+            labelText={'ambalaj türü'}
+            defaultValue={invoice.ambalaj_type}
+            onChange={(e, o) => onInputChange(e.target, 'ambalaj_type')}
+          />
+
           <div>
             <p style={{ paddingTop: 5, paddingBottom: 15, fontSize: 14 }}>
               Alıcı ad-soyad, adress
             </p>
-            <StyledSelect options={getClientOptions(data?.clients)} />
+            <StyledSelect
+              name='receiver_id'
+              options={getClientOptions(data?.clients)}
+              onChange={(values) => onInputChange(values[0], 'receiver_id')}
+            />
           </div>
-          <FormRow type='text' name='kg' labelText={'ambalaj türü'} />
-          {/*<FormRowSelect
-            labelText='ambalaj türü'
-            name='ambalaj_type'
-            defaultValue={JOB_STATUS.PENDING}
-            list={Object.values(JOB_STATUS)}
-          />*/}
-
-          <SubmitBtn formBtn />
+          <div>
+            <p style={{ paddingTop: 5, paddingBottom: 15, fontSize: 14 }}>
+              Invoice tarihi
+            </p>
+            <DatePicker
+              name='invoice_date'
+              dateFormat='dd.MM.yyyy'
+              selected={startDate}
+              onChange={(date) => handleDate(date)}
+              locale={locale}
+            />
+          </div>
+          <CButton onClick={handleSumbit} color='primary'>
+            Primary
+          </CButton>
         </div>
       </Form>
     </Wrapper>

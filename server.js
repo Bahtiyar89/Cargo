@@ -15,6 +15,7 @@ import jobRouter from './routes/jobRouter.js';
 import authRouter from './routes/authRouter.js';
 import userRouter from './routes/userRouter.js';
 import clientRouter from './routes/clientRouter.js';
+import invoiceRouter from './routes/invoiceRouter.js';
 // public
 import { dirname } from 'path';
 import { fileURLToPath } from 'url';
@@ -47,6 +48,7 @@ app.get('/api/v1/test', (req, res) => {
 app.use('/api/v1/jobs', authenticateUser, jobRouter);
 app.use('/api/v1/users', authenticateUser, userRouter);
 app.use('/api/v1/clients', authenticateUser, clientRouter);
+app.use('/api/v1/invoices', authenticateUser, invoiceRouter);
 app.use('/api/v1/auth', authRouter);
 
 /*app.get('*', (req, res) => {

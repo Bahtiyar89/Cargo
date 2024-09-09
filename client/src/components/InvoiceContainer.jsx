@@ -1,68 +1,80 @@
 import React, { Fragment, useState, useEffect } from 'react';
 import { FaPen, FaTrash } from 'react-icons/fa';
 import { useAllInvoicesContext } from '../pages/AllInvoices';
-import Wrapper from '../assets/wrappers/JobsContainer';
-import { ReactToPrint, useReactToPrint } from 'react-to-print';
+import { ReactToPrint } from 'react-to-print';
 import {
   CButton,
-  CCard,
-  CCardBody,
   CCardHeader,
   CCol,
   CForm,
-  CFormInput,
   CRow,
-  CSmartTable,
+  CTab,
+  CTabContent,
   CTable,
   CTableBody,
   CTableDataCell,
   CTableHead,
   CTableHeaderCell,
   CTableRow,
+  CTabList,
+  CTabPanel,
+  CTabs,
 } from '@coreui/react-pro';
 import '@coreui/coreui-pro/dist/css/coreui.min.css';
+import DatePicker from 'react-datepicker';
+import { locale } from '../utils/constants';
+import moment from 'moment';
+import { useSubmit } from 'react-router-dom';
+import customFetch from '../utils/customFetch';
 
 const InvoiceContainer = () => {
-  const { data } = useAllInvoicesContext();
-  const { clients } = data;
-  const [items, setItems] = useState([]);
-  const [showPrint, setShowPrint] = useState(false);
+  const submit = useSubmit();
   const componentRef = React.useRef(null);
+  const { data } = useAllInvoicesContext();
+  const { invoices } = data;
+  const [items, setItems] = useState([]);
+  const [pointDate, setPointDate] = useState('');
+  const [monthDate, setMonthDate] = useState(new Date());
+  const [showPrint, setShowPrint] = useState(false);
 
   useEffect(() => {
-    setItems(clients);
-  }, [clients]);
+    setItems(invoices);
+  }, [invoices]);
 
-  const columns = [
-    {
-      key: 'sender',
-      label: 'Gönderici',
-      _style: { width: '20%' },
-    },
+  const handleDate = (date) => {
+    setPointDate(date);
+    setMonthDate('');
 
-    {
-      key: 'sender_phone',
-      label: 'Gönderici Tel',
-      _style: { width: '20%' },
-    },
-    {
-      key: 'receiver',
-      label: 'Alıcı',
-      _style: { width: '20%' },
-    },
-    {
-      key: 'receiver_phone',
-      label: 'Alıcı Tel',
-      _style: { width: '20%' },
-    },
-    {
-      key: 'address',
-      label: 'Adres',
-      _style: { width: '20%' },
-    },
-    { key: 'edit', filter: false, sorter: false, label: '' },
-  ];
-  console.log('showPrint: ', showPrint);
+    //  submit({ pointDate: moment(date).format('DD.MM.YYYY') });
+  };
+
+  const handleMonthDate = (date) => {
+    setMonthDate(date);
+    setPointDate('');
+  };
+
+  const renderMonthContent = (month, shortMonth, longMonth, day) => {
+    const fullYear = new Date(day).getFullYear();
+    const tooltipText = `Tooltip for month: ${longMonth} ${fullYear}`;
+
+    return <span title={tooltipText}>{shortMonth}</span>;
+  };
+  console.log('mont: ', moment(monthDate).format('M.YYYY'));
+  console.log('pointDate: ', pointDate);
+
+  const handleFormSubmit = async () => {
+    if (pointDate != '') {
+      const { data } = await customFetch.get(
+        `/invoices/?pointDate=${moment(pointDate).format('DD.MM.YYYY')}`
+      );
+      setItems(data.invoices);
+    } else {
+      const { data } = await customFetch.get(
+        `/invoices/?pointDate=${moment(monthDate).format('MM.YYYY')}`
+      );
+      setItems(data.invoices);
+    }
+  };
 
   return (
     <Fragment>
@@ -81,94 +93,149 @@ const InvoiceContainer = () => {
         <CRow>
           <CCol>
             <CForm>
-              <CFormInput
-                type='email'
-                id='exampleFormControlInput1'
-                placeholder='name@example.com'
-                text='Must be 8-20 characters long.'
-                aria-describedby='exampleFormControlInputHelpInline'
-              />
+              <div>
+                <p style={{ paddingTop: 5, paddingBottom: 15, fontSize: 14 }}>
+                  Invoice tarihi
+                </p>
+                <DatePicker
+                  name='invoice_date'
+                  dateFormat='dd.MM.yyyy'
+                  selected={pointDate}
+                  onChange={(date) => handleDate(date)}
+                  locale={locale}
+                />
+              </div>
             </CForm>
           </CCol>
 
           <CCol>
-            <CFormInput
-              type='email'
-              id='exampleFormControlInput1'
-              placeholder='name@example.com'
-              text='Must be 8-20 characters long.'
-              aria-describedby='exampleFormControlInputHelpInline'
-            />
+            <div>
+              <p style={{ paddingTop: 5, paddingBottom: 15, fontSize: 14 }}>
+                Invoice Ayı
+              </p>
+              <DatePicker
+                selected={monthDate}
+                renderMonthContent={renderMonthContent}
+                showMonthYearPicker
+                name='invoice_date'
+                dateFormat='MM.yyyy'
+                onChange={(date) => handleMonthDate(date)}
+                locale={locale}
+              />
+            </div>
           </CCol>
           <CCol>
-            <CButton color={'secondary'}>Сформировать</CButton>
+            <p style={{ paddingTop: 5, paddingBottom: 15, fontSize: 14 }}></p>
+            <CButton onClick={handleFormSubmit} color={'secondary'}>
+              Сформировать
+            </CButton>
           </CCol>
         </CRow>
       </CCardHeader>
 
-      <CTableBody>
-        <ReactToPrint
-          trigger={() => {
-            return <CButton color={'secondary'}>Print</CButton>;
-          }}
-          content={() => componentRef.current}
-          documentTitle='title'
-          onBeforePrint={() => {
-            return setShowPrint(true);
-          }}
-          onAfterPrint={() => setShowPrint(false)}
-          removeAfterPrint={false}
-        />
-        <CTable ref={componentRef}>
-          <CTableHead>
-            <CTableRow>
-              <CTableHeaderCell scope='col'>#</CTableHeaderCell>
-              <CTableHeaderCell scope='col'>sender</CTableHeaderCell>
-              <CTableHeaderCell scope='col'>sender_phone</CTableHeaderCell>
-              <CTableHeaderCell scope='col'>receiver</CTableHeaderCell>
-              <CTableHeaderCell scope='col'>receiver_phone</CTableHeaderCell>
-              <CTableHeaderCell scope='col'>address</CTableHeaderCell>
-              <CTableHeaderCell scope='col'></CTableHeaderCell>
-            </CTableRow>
-          </CTableHead>
-          <CTableBody>
-            {items.map((item, i) => {
-              return (
-                <CTableRow key={item.id}>
-                  <CTableHeaderCell>{i + 1}</CTableHeaderCell>
-                  <CTableDataCell>{item.sender}</CTableDataCell>
-                  <CTableDataCell>{item.sender_phone}</CTableDataCell>
-                  <CTableDataCell>{item.receiver}</CTableDataCell>
-                  <CTableDataCell>{item.receiver_phone}</CTableDataCell>
-                  <CTableDataCell>{item.address}</CTableDataCell>
-                  <CTableDataCell>
-                    <Fragment>
-                      <CButton
-                        onClick={() => console.log(item)}
-                        color='primary'
-                        variant='outline'
-                        shape='square'
-                        size='sm'
-                      >
-                        <FaPen />
-                      </CButton>
-                      <CButton
-                        onClick={() => console.log(item)}
-                        color='primary'
-                        variant='outline'
-                        shape='square'
-                        size='sm'
-                      >
-                        <FaTrash color={'red'} />
-                      </CButton>
-                    </Fragment>
-                  </CTableDataCell>
-                </CTableRow>
-              );
-            })}
-          </CTableBody>
-        </CTable>
-      </CTableBody>
+      <>
+        <CTabs activeItemKey={2}>
+          <CTabList variant='underline'>
+            <CTab aria-controls='home-tab-pane' itemKey={1}>
+              Home
+            </CTab>
+            <CTab aria-controls='profile-tab-pane' itemKey={2}>
+              Profile
+            </CTab>
+          </CTabList>
+          <CTabContent>
+            <CTabPanel
+              className='py-3'
+              aria-labelledby='home-tab-pane'
+              itemKey={1}
+            >
+              <div style={{ paddingTop: 20, paddingBottom: 20 }}>
+                <ReactToPrint
+                  trigger={() => {
+                    return <CButton color={'secondary'}>Print</CButton>;
+                  }}
+                  content={() => componentRef.current}
+                  documentTitle='title'
+                  onBeforePrint={() => {
+                    return setShowPrint(true);
+                  }}
+                  onAfterPrint={() => setShowPrint(false)}
+                  removeAfterPrint={false}
+                />
+              </div>
+
+              <CTable ref={componentRef}>
+                <CTableHead>
+                  <CTableRow>
+                    <CTableHeaderCell scope='col'>#</CTableHeaderCell>
+                    <CTableHeaderCell scope='col'>barcod</CTableHeaderCell>
+                    <CTableHeaderCell scope='col'>adres</CTableHeaderCell>
+                    <CTableHeaderCell scope='col'>kg</CTableHeaderCell>
+                    <CTableHeaderCell scope='col'>
+                      alıcı ve tel
+                    </CTableHeaderCell>
+                    <CTableHeaderCell scope='col'>
+                      Ambalaj tipi
+                    </CTableHeaderCell>
+                    <CTableHeaderCell scope='col'>fiyat</CTableHeaderCell>
+                    <CTableHeaderCell scope='col'></CTableHeaderCell>
+                  </CTableRow>
+                </CTableHead>
+                <CTableBody>
+                  {items.map((item, index) => {
+                    return (
+                      <CTableRow key={index}>
+                        <CTableHeaderCell>{index + 1}</CTableHeaderCell>
+                        <CTableDataCell>{item.barcod}</CTableDataCell>
+                        <CTableDataCell style={{ width: '20%' }}>
+                          {item.receiver_id.address}
+                        </CTableDataCell>
+                        <CTableDataCell>{item.kg}</CTableDataCell>
+                        <CTableDataCell>
+                          {item.receiver_id.receiver +
+                            ' ' +
+                            item.receiver_id.receiver_phone}
+                        </CTableDataCell>
+                        <CTableDataCell>{item.ambalaj_type}</CTableDataCell>
+                        <CTableDataCell>{item.price}</CTableDataCell>
+                        <CTableDataCell>
+                          <Fragment>
+                            <CButton
+                              onClick={() => console.log(item)}
+                              color='primary'
+                              variant='outline'
+                              shape='square'
+                              size='sm'
+                            >
+                              <FaPen />
+                            </CButton>
+                            <CButton
+                              onClick={() => console.log(item)}
+                              color='primary'
+                              variant='outline'
+                              shape='square'
+                              size='sm'
+                            >
+                              <FaTrash color={'red'} />
+                            </CButton>
+                          </Fragment>
+                        </CTableDataCell>
+                      </CTableRow>
+                    );
+                  })}
+                </CTableBody>
+              </CTable>
+            </CTabPanel>
+            <CTabPanel
+              className='py-3'
+              aria-labelledby='profile-tab-pane'
+              itemKey={2}
+            >
+              Profile tab content
+            </CTabPanel>
+          </CTabContent>
+        </CTabs>
+      </>
     </Fragment>
   );
 };

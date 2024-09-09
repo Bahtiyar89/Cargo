@@ -36,7 +36,7 @@ import { loader as adminLoader } from './pages/Admin';
 import { action as profileAction } from './pages/Profile';
 import { action as addAddClientAction } from './pages/AddClient';
 import { loader as allClientsLoader } from './pages/AllClients';
-import { loader as allClientsLoader2 } from './pages/AllInvoices';
+import { loader as allInvoicesLoader } from './pages/AllInvoices';
 import { loader as allClientsLoader3 } from './pages/AddInvoice';
 import { loader as statsLoader } from './pages/Stats';
 import ErrorElement from './components/ErrorElement';
@@ -107,7 +107,7 @@ const router = createBrowserRouter([
           {
             path: 'all-invoices',
             element: <AllInvoices />,
-            loader: allClientsLoader2(queryClient),
+            loader: allInvoicesLoader(queryClient),
             errorElement: <ErrorElement />,
           },
           {

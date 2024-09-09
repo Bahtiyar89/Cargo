@@ -6,14 +6,14 @@ import InvoiceContainer from '../components/InvoiceContainer';
 
 const allInvoicesQuery = (params) => {
   console.log('params::55 ', params);
+
   return {
     queryKey: ['allinvoices'],
 
     queryFn: async () => {
-      const { data } = await customFetch.get('/clients', {
+      const { data } = await customFetch.get('/invoices', {
         params,
       });
-      console.log('data:: 1111', data);
 
       return data;
     },
@@ -26,6 +26,7 @@ export const loader =
     const params = Object.fromEntries([
       ...new URL(request.url).searchParams.entries(),
     ]);
+    console.log('params: ', params);
 
     await queryClient.ensureQueryData(allInvoicesQuery(params));
     return { searchValues: { ...params } };
@@ -36,7 +37,6 @@ const AllInvoicesContext = createContext();
 const AllInvoices = () => {
   const { searchValues } = useLoaderData();
   const { data } = useQuery(allInvoicesQuery(searchValues));
-  console.log('111:', data);
 
   return (
     <AllInvoicesContext.Provider value={{ data, searchValues }}>
