@@ -26,6 +26,8 @@ import { locale } from '../utils/constants';
 import moment from 'moment';
 import { useSubmit } from 'react-router-dom';
 import customFetch from '../utils/customFetch';
+import InvoiceTable from './Invoice/InvoiceTable';
+import CartTable from './Invoice/CartTable';
 
 const InvoiceContainer = () => {
   const submit = useSubmit();
@@ -135,12 +137,12 @@ const InvoiceContainer = () => {
 
       <>
         <CTabs activeItemKey={2}>
-          <CTabList variant='underline'>
+          <CTabList style={{ marginTop: 20 }} variant='underline'>
             <CTab aria-controls='home-tab-pane' itemKey={1}>
-              Home
+              Tablo
             </CTab>
             <CTab aria-controls='profile-tab-pane' itemKey={2}>
-              Profile
+              Cart
             </CTab>
           </CTabList>
           <CTabContent>
@@ -149,89 +151,14 @@ const InvoiceContainer = () => {
               aria-labelledby='home-tab-pane'
               itemKey={1}
             >
-              <div style={{ paddingTop: 20, paddingBottom: 20 }}>
-                <ReactToPrint
-                  trigger={() => {
-                    return <CButton color={'secondary'}>Print</CButton>;
-                  }}
-                  content={() => componentRef.current}
-                  documentTitle='title'
-                  onBeforePrint={() => {
-                    return setShowPrint(true);
-                  }}
-                  onAfterPrint={() => setShowPrint(false)}
-                  removeAfterPrint={false}
-                />
-              </div>
-
-              <CTable ref={componentRef}>
-                <CTableHead>
-                  <CTableRow>
-                    <CTableHeaderCell scope='col'>#</CTableHeaderCell>
-                    <CTableHeaderCell scope='col'>barcod</CTableHeaderCell>
-                    <CTableHeaderCell scope='col'>adres</CTableHeaderCell>
-                    <CTableHeaderCell scope='col'>kg</CTableHeaderCell>
-                    <CTableHeaderCell scope='col'>
-                      alıcı ve tel
-                    </CTableHeaderCell>
-                    <CTableHeaderCell scope='col'>
-                      Ambalaj tipi
-                    </CTableHeaderCell>
-                    <CTableHeaderCell scope='col'>fiyat</CTableHeaderCell>
-                    <CTableHeaderCell scope='col'></CTableHeaderCell>
-                  </CTableRow>
-                </CTableHead>
-                <CTableBody>
-                  {items.map((item, index) => {
-                    return (
-                      <CTableRow key={index}>
-                        <CTableHeaderCell>{index + 1}</CTableHeaderCell>
-                        <CTableDataCell>{item.barcod}</CTableDataCell>
-                        <CTableDataCell style={{ width: '20%' }}>
-                          {item.receiver_id.address}
-                        </CTableDataCell>
-                        <CTableDataCell>{item.kg}</CTableDataCell>
-                        <CTableDataCell>
-                          {item.receiver_id.receiver +
-                            ' ' +
-                            item.receiver_id.receiver_phone}
-                        </CTableDataCell>
-                        <CTableDataCell>{item.ambalaj_type}</CTableDataCell>
-                        <CTableDataCell>{item.price}</CTableDataCell>
-                        <CTableDataCell>
-                          <Fragment>
-                            <CButton
-                              onClick={() => console.log(item)}
-                              color='primary'
-                              variant='outline'
-                              shape='square'
-                              size='sm'
-                            >
-                              <FaPen />
-                            </CButton>
-                            <CButton
-                              onClick={() => console.log(item)}
-                              color='primary'
-                              variant='outline'
-                              shape='square'
-                              size='sm'
-                            >
-                              <FaTrash color={'red'} />
-                            </CButton>
-                          </Fragment>
-                        </CTableDataCell>
-                      </CTableRow>
-                    );
-                  })}
-                </CTableBody>
-              </CTable>
+              <InvoiceTable items={items} />
             </CTabPanel>
             <CTabPanel
               className='py-3'
               aria-labelledby='profile-tab-pane'
               itemKey={2}
             >
-              Profile tab content
+              <CartTable items={items} />
             </CTabPanel>
           </CTabContent>
         </CTabs>

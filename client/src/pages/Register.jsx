@@ -22,17 +22,17 @@ const Register = () => {
     <Wrapper>
       <Form method='post' className='form'>
         <Logo />
-        <h4>Register</h4>
-        <FormRow type='text' name='name' />
-        <FormRow type='text' name='lastName' labelText='last name' />
-        <FormRow type='text' name='location' />
-        <FormRow type='email' name='email' />
-        <FormRow type='password' name='password' />
+        <h4>Kayıt ol</h4>
+        <FormRow type='text' name='name' labelText='isim' />
+        <FormRow type='text' name='lastName' labelText='soyisim' />
+        <FormRow type='text' name='location' labelText='yer' />
+        <FormRow type='email' name='email' labelText='email' />
+        <FormRow type='password' name='password' labelText='şifre' />
         <SubmitBtn />
         <p>
-          Already a member?
+          Kayıtlı iseniz?
           <Link to='/login' className='member-btn'>
-            Login
+            Giriş
           </Link>
         </p>
       </Form>

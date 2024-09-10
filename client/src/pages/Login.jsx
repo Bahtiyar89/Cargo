@@ -40,7 +40,7 @@ const Login = () => {
     <Wrapper>
       <Form method='post' className='form'>
         <Logo />
-        <h4>login</h4>
+        <h4>Giriş</h4>
         <FormRow type='email' name='email' />
         <FormRow type='password' name='password' />
         <SubmitBtn />
@@ -48,9 +48,9 @@ const Login = () => {
           explore the app
         </button>
         <p>
-          Not a member yet?
+          Kayıtlı değilmisiniz?
           <Link to='/register' className='member-btn'>
-            Register
+            Kayıt ol
           </Link>
         </p>
       </Form>

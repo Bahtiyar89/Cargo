@@ -26,7 +26,7 @@ const links = [
     text: 'invoice ekle',
     path: 'add-invoice',
     icon: <FaWpforms />,
-  },
+  } /*
   {
     text: 'add job',
     path: 'add-job',
@@ -46,7 +46,7 @@ const links = [
     text: 'profile',
     path: 'profile',
     icon: <ImProfile />,
-  },
+  },*/,
   {
     text: 'admin',
     path: 'admin',
