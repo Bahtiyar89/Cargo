@@ -30,18 +30,20 @@ const CartTable = ({ items }) => {
                 textAlign: 'center',
               }}
             >
-              <p style={{ fontSize: 25 }}>Alıcı: {item.receiver_id.receiver}</p>
               <p style={{ fontSize: 25 }}>
-                Gönderen: {item.receiver_id.sender}
+                Alıcı: {item?.receiver_id?.receiver}
               </p>
               <p style={{ fontSize: 25 }}>
-                Gönderici: {item.receiver_id.sender_phone}
+                Gönderen: {item?.receiver_id?.sender}
               </p>
               <p style={{ fontSize: 25 }}>
-                Alıcı: {item.receiver_id.receiver_phone}
+                Gönderici: {item?.receiver_id?.sender_phone}
               </p>
               <p style={{ fontSize: 25 }}>
-                Address: {item.receiver_id.address}
+                Alıcı: {item?.receiver_id?.receiver_phone}
+              </p>
+              <p style={{ fontSize: 25 }}>
+                Address: {item?.receiver_id?.address}
               </p>
             </div>
           );

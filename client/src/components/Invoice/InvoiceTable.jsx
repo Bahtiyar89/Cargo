@@ -48,13 +48,13 @@ const InvoiceTable = ({ items }) => {
                 <CTableHeaderCell>{index + 1}</CTableHeaderCell>
                 <CTableDataCell>{item.barcod}</CTableDataCell>
                 <CTableDataCell style={{ width: '20%' }}>
-                  {item.receiver_id.address}
+                  {item?.receiver_id?.address}
                 </CTableDataCell>
                 <CTableDataCell>{item.kg}</CTableDataCell>
                 <CTableDataCell>
-                  {item.receiver_id.receiver +
+                  {item?.receiver_id?.receiver +
                     ' ' +
-                    item.receiver_id.receiver_phone}
+                    item?.receiver_id?.receiver_phone}
                 </CTableDataCell>
                 <CTableDataCell>{item.ambalaj_type}</CTableDataCell>
                 <CTableDataCell>{item.price}</CTableDataCell>
