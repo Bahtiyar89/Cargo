@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { FaPen, FaTrash } from 'react-icons/fa';
-import { useAllClientsContext } from '../pages/AllClients';
+import { FaPen, FaPrint, FaTrash } from 'react-icons/fa';
+import { useAllClientsContext } from '../../pages/AllClients';
 import { Form, useNavigate } from 'react-router-dom';
 import { CButton, CSmartTable } from '@coreui/react-pro';
-import '@coreui/coreui-pro/dist/css/coreui.min.css';
+
+import ClientPrint from './ClientPrint';
 
 const ClientsContainer = () => {
   const navigate = useNavigate();
+  const [visible, setVisible] = useState(false);
+  const [client, setClient] = useState({});
   const { data } = useAllClientsContext();
   const { clients } = data;
   const [items, setItems] = useState([]);
@@ -49,7 +52,13 @@ const ClientsContainer = () => {
       filter: false,
       sorter: false,
     },
+    { key: 'print', filter: false, sorter: false, label: '' },
   ];
+
+  const handleModal = (val) => {
+    setVisible(true);
+    setClient(val);
+  };
 
   return (
     <CSmartTable
@@ -64,6 +73,8 @@ const ClientsContainer = () => {
       pagination
       scopedColumns={{
         edit: (item) => {
+          console.log('item::: ', item);
+
           return (
             <td className='py-2'>
               <CButton
@@ -75,6 +86,27 @@ const ClientsContainer = () => {
               >
                 <FaPen />
               </CButton>
+            </td>
+          );
+        },
+        print: (item) => {
+          return (
+            <td className='py-2'>
+              <CButton
+                onClick={() => handleModal(item)}
+                color='primary'
+                variant='outline'
+                shape='square'
+                size='sm'
+              >
+                <FaPrint />
+              </CButton>
+
+              <ClientPrint
+                client={client}
+                visible={visible}
+                handleVisible={(val) => setVisible(val)}
+              />
             </td>
           );
         },

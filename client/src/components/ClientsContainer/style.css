@@ -1,0 +1,7 @@
+.btn-close {
+  padding: 0.25em 0.25em !important;
+  color: var(--cui-btn-close-color) !important;
+  background: transparent var(--cui-btn-close-bg) center/1em auto no-repeat !important;
+  border: 0 !important;
+  border-radius: 0.375rem !important;
+}

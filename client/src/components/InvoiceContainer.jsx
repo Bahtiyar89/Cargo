@@ -10,17 +10,10 @@ import {
   CRow,
   CTab,
   CTabContent,
-  CTable,
-  CTableBody,
-  CTableDataCell,
-  CTableHead,
-  CTableHeaderCell,
-  CTableRow,
   CTabList,
   CTabPanel,
   CTabs,
 } from '@coreui/react-pro';
-import '@coreui/coreui-pro/dist/css/coreui.min.css';
 import DatePicker from 'react-datepicker';
 import { locale } from '../utils/constants';
 import moment from 'moment';
