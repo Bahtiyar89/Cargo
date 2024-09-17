@@ -19,7 +19,7 @@ import { locale } from '../utils/constants';
 import moment from 'moment';
 import { useSubmit } from 'react-router-dom';
 import customFetch from '../utils/customFetch';
-import InvoiceTable from './Invoice/InvoiceTable';
+import InvoiceTable from './Invoice';
 import CartTable from './Invoice/CartTable';
 
 const InvoiceContainer = () => {
@@ -129,7 +129,7 @@ const InvoiceContainer = () => {
       </CCardHeader>
 
       <>
-        <CTabs activeItemKey={2}>
+        <CTabs activeItemKey={1}>
           <CTabList style={{ marginTop: 20 }} variant='underline'>
             <CTab aria-controls='home-tab-pane' itemKey={1}>
               Tablo

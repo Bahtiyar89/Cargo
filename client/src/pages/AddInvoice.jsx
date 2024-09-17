@@ -69,6 +69,7 @@ const AddInvoice = () => {
     price: 1.3,
     ambalaj_type: '',
     receiver_id: '',
+    vehicle_number: '',
     invoice_date: moment(new Date()).format('DD.MM.YYYY'),
   });
 
@@ -192,6 +193,13 @@ const AddInvoice = () => {
             defaultValue={invoice.ambalaj_type}
             onChange={(e, o) => onInputChange(e.target, 'ambalaj_type')}
           />
+          <FormRow
+            type='text'
+            name='vehicle_number'
+            labelText={'Araba numarası'}
+            defaultValue={invoice.vehicle_number}
+            onChange={(e, o) => onInputChange(e.target, 'vehicle_number')}
+          />
 
           <div>
             <p style={{ paddingTop: 5, paddingBottom: 15, fontSize: 14 }}>
@@ -205,7 +213,7 @@ const AddInvoice = () => {
           </div>
           <div>
             <p style={{ paddingTop: 5, paddingBottom: 15, fontSize: 14 }}>
-              Invoice tarihi
+              Araba çıkış tarihi
             </p>
             <DatePicker
               name='invoice_date'
@@ -216,7 +224,7 @@ const AddInvoice = () => {
             />
           </div>
           <CButton onClick={handleSumbit} color='primary'>
-            Primary
+            Kaydet
           </CButton>
         </div>
       </Form>

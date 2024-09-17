@@ -21,6 +21,7 @@ const CartTable = ({ items }) => {
 
           return (
             <div
+              key={index}
               style={{
                 margin: 10,
                 padding: 10,
