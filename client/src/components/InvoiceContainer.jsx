@@ -2,6 +2,7 @@ import React, { Fragment, useState, useEffect } from 'react';
 import { FaPen, FaTrash } from 'react-icons/fa';
 import { useAllInvoicesContext } from '../pages/AllInvoices';
 import { ReactToPrint } from 'react-to-print';
+import { FormRow } from '.';
 import {
   CButton,
   CCardHeader,
@@ -29,8 +30,8 @@ const InvoiceContainer = () => {
   const { invoices } = data;
   const [items, setItems] = useState([]);
   const [pointDate, setPointDate] = useState('');
-  const [monthDate, setMonthDate] = useState(new Date());
-  const [showPrint, setShowPrint] = useState(false);
+  const [monthDate, setMonthDate] = useState('');
+  const [vehicle_number, setVehicle_number] = useState('');
 
   useEffect(() => {
     setItems(invoices);
@@ -58,18 +59,16 @@ const InvoiceContainer = () => {
   console.log('pointDate: ', pointDate);
 
   const handleFormSubmit = async () => {
-    if (pointDate != '') {
-      const { data } = await customFetch.get(
-        `/invoices/?pointDate=${moment(pointDate).format('DD.MM.YYYY')}`
-      );
-      setItems(data.invoices);
-    } else {
-      const { data } = await customFetch.get(
-        `/invoices/?pointDate=${moment(monthDate).format('MM.YYYY')}`
-      );
-      setItems(data.invoices);
-    }
+    const { data } = await customFetch.get(
+      `/invoices/?pointDate=${moment(pointDate).format(
+        'DD.MM.YYYY'
+      )}&vehicle_number=${vehicle_number}&monthDate=${moment(monthDate).format(
+        'YYYY-MM-DD'
+      )}`
+    );
+    setItems(data.invoices);
   };
+  console.log('new Date() ', new Date('2024-09-17'));
 
   return (
     <Fragment>
@@ -90,6 +89,23 @@ const InvoiceContainer = () => {
             <CForm>
               <div>
                 <p style={{ paddingTop: 5, paddingBottom: 15, fontSize: 14 }}>
+                  Araba numarası
+                </p>
+                <input
+                  type={'text'}
+                  id={'vehicle_numberx'}
+                  name={'vehicle_number'}
+                  value={vehicle_number}
+                  onChange={(e) => setVehicle_number(e.target.value)}
+                  required
+                />
+              </div>
+            </CForm>
+          </CCol>
+          <CCol>
+            <CForm>
+              <div>
+                <p style={{ paddingTop: 5, paddingBottom: 15, fontSize: 14 }}>
                   Invoice tarihi
                 </p>
                 <DatePicker
@@ -106,14 +122,13 @@ const InvoiceContainer = () => {
           <CCol>
             <div>
               <p style={{ paddingTop: 5, paddingBottom: 15, fontSize: 14 }}>
-                Invoice Ayı
+                Invoice Oluşturulmuş tarih
               </p>
               <DatePicker
                 selected={monthDate}
                 renderMonthContent={renderMonthContent}
-                showMonthYearPicker
-                name='invoice_date'
-                dateFormat='MM.yyyy'
+                name='createdAt'
+                dateFormat='dd.MM.yyyy'
                 onChange={(date) => handleMonthDate(date)}
                 locale={locale}
               />
