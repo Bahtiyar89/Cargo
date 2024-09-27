@@ -39,7 +39,6 @@ const CartTable = ({ items }) => {
             <CTableHeaderCell scope='col'>Ambalaj tipi</CTableHeaderCell>
             <CTableHeaderCell scope='col'>Araba numarası</CTableHeaderCell>
             <CTableHeaderCell scope='col'>fiyat</CTableHeaderCell>
-            <CTableHeaderCell scope='col'></CTableHeaderCell>
           </CTableRow>
         </CTableHead>
         <CTableBody>
@@ -58,28 +57,6 @@ const CartTable = ({ items }) => {
                 <CTableDataCell>{item.ambalaj_type}</CTableDataCell>
                 <CTableDataCell>{item.vehicle_number}</CTableDataCell>
                 <CTableDataCell>{item.price}</CTableDataCell>
-                <CTableDataCell>
-                  <Fragment>
-                    <CButton
-                      onClick={() => console.log(item)}
-                      color='primary'
-                      variant='outline'
-                      shape='square'
-                      size='sm'
-                    >
-                      <FaPen />
-                    </CButton>
-                    <CButton
-                      onClick={() => console.log(item)}
-                      color='primary'
-                      variant='outline'
-                      shape='square'
-                      size='sm'
-                    >
-                      <FaTrash color={'red'} />
-                    </CButton>
-                  </Fragment>
-                </CTableDataCell>
               </CTableRow>
             );
           })}

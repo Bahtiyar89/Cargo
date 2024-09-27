@@ -55,8 +55,6 @@ const InvoiceContainer = () => {
 
     return <span title={tooltipText}>{shortMonth}</span>;
   };
-  console.log('mont: ', moment(monthDate).format('M.YYYY'));
-  console.log('pointDate: ', pointDate);
 
   const handleFormSubmit = async () => {
     const { data } = await customFetch.get(
@@ -68,7 +66,6 @@ const InvoiceContainer = () => {
     );
     setItems(data.invoices);
   };
-  console.log('new Date() ', new Date('2024-09-17'));
 
   return (
     <Fragment>
@@ -80,7 +77,7 @@ const InvoiceContainer = () => {
             justifyContent: 'space-between',
           }}
         >
-          <h3>Tüm müşteriler</h3>
+          <h3>Tüm Invoice</h3>
         </div>
         <hr />
 
@@ -137,7 +134,7 @@ const InvoiceContainer = () => {
           <CCol>
             <p style={{ paddingTop: 5, paddingBottom: 15, fontSize: 14 }}></p>
             <CButton onClick={handleFormSubmit} color={'secondary'}>
-              Сформировать
+              Arama yap
             </CButton>
           </CCol>
         </CRow>

@@ -18,7 +18,7 @@ const InvoiceTable = ({ items }) => {
 
   return (
     <Fragment>
-      <div style={{ paddingTop: 20, paddingBottom: 20 }}>
+      {/*    <div style={{ paddingTop: 20, paddingBottom: 20 }}>
         <ReactToPrint
           trigger={() => {
             return <CButton color={'secondary'}>Print</CButton>;
@@ -27,7 +27,7 @@ const InvoiceTable = ({ items }) => {
           documentTitle='title'
           removeAfterPrint={false}
         />
-      </div>
+      </div>*/}
 
       <CTable ref={componentRef}>
         <CTableHead>
