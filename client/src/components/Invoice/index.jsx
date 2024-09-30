@@ -1,5 +1,6 @@
 import React, { Fragment, useState, useEffect } from 'react';
 import { FaPen, FaTrash } from 'react-icons/fa';
+import { Form, useNavigate } from 'react-router-dom';
 import { useAllInvoicesContext } from '../../pages/AllInvoices';
 import { ReactToPrint } from 'react-to-print';
 import {
@@ -13,6 +14,7 @@ import {
 } from '@coreui/react-pro';
 
 const InvoiceTable = ({ items }) => {
+  const navigate = useNavigate();
   const componentRef = React.useRef(null);
   console.log('items: 2', items);
 
@@ -62,7 +64,7 @@ const InvoiceTable = ({ items }) => {
                 <CTableDataCell>
                   <Fragment>
                     <CButton
-                      onClick={() => console.log(item)}
+                      onClick={() => navigate(`../edit-invoice/${item._id}`)}
                       color='primary'
                       variant='outline'
                       shape='square'

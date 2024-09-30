@@ -18,6 +18,7 @@ import {
   AddClient,
   AllClients,
   EditClient,
+  EditInvoice,
   AddInvoice,
 } from './pages';
 
@@ -30,6 +31,8 @@ import { loader as editJobLoader } from './pages/EditJob';
 import { action as editJobAction } from './pages/EditJob';
 import { loader as editClientLoader } from './pages/EditClient';
 import { action as editClientAction } from './pages/EditClient';
+import { loader as editInvoiceLoader } from './pages/EditInvoice';
+import { action as editInvoiceAction } from './pages/EditInvoice';
 import { action as deleteJobAction } from './pages/DeleteJob';
 import { action as deleteClientAction } from './pages/DeleteClient';
 import { loader as adminLoader } from './pages/Admin';
@@ -109,6 +112,12 @@ const router = createBrowserRouter([
             element: <AllInvoices />,
             loader: allInvoicesLoader(queryClient),
             errorElement: <ErrorElement />,
+          },
+          {
+            path: 'edit-invoice/:id',
+            element: <EditInvoice />,
+            loader: editInvoiceLoader(queryClient),
+            action: editInvoiceAction(queryClient),
           },
           {
             path: 'add-invoice',

@@ -12,5 +12,6 @@ export { default as Profile } from './Profile';
 export { default as Admin } from './Admin';
 export { default as AddClient } from './AddClient';
 export { default as EditClient } from './EditClient';
+export { default as EditInvoice } from './EditInvoice';
 export { default as AllClients } from './AllClients';
 export { default as AddInvoice } from './AddInvoice';

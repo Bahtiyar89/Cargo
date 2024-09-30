@@ -35,3 +35,8 @@ export const newInvoice = async (req, res) => {
   const invoice = await InvoiceModel.create(req.body);
   res.status(StatusCodes.CREATED).json({ invoice });
 };
+
+export const getInvoice = async (req, res) => {
+  const invoice = await InvoiceModel.findById(req.params.id);
+  res.status(StatusCodes.OK).json({ invoice });
+};
