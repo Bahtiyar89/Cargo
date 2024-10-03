@@ -24,7 +24,7 @@ const LogoutContainer = () => {
       </button>
       <div className={showLogout ? 'dropdown show-dropdown' : 'dropdown'}>
         <button type='button' className='dropdown-btn' onClick={logoutUser}>
-          logout
+          çıkış
         </button>
       </div>
     </Wrapper>

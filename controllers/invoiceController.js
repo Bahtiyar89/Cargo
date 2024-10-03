@@ -40,3 +40,24 @@ export const getInvoice = async (req, res) => {
   const invoice = await InvoiceModel.findById(req.params.id);
   res.status(StatusCodes.OK).json({ invoice });
 };
+
+export const updateInvoice = async (req, res) => {
+  const updatedInvoice = await InvoiceModel.findByIdAndUpdate(
+    req.params.id,
+    req.body,
+    {
+      new: true,
+    }
+  );
+
+  res
+    .status(StatusCodes.OK)
+    .json({ msg: 'invoice modified', job: updatedInvoice });
+};
+
+export const deleteInvoice = async (req, res) => {
+  const removedInvoice = await InvoiceModel.findByIdAndDelete(req.params.id);
+  res
+    .status(StatusCodes.OK)
+    .json({ msg: 'invoice deleted', invoice: removedInvoice });
+};

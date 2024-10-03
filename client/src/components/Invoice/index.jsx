@@ -1,8 +1,6 @@
-import React, { Fragment, useState, useEffect } from 'react';
+import React, { Fragment } from 'react';
 import { FaPen, FaTrash } from 'react-icons/fa';
-import { Form, useNavigate } from 'react-router-dom';
-import { useAllInvoicesContext } from '../../pages/AllInvoices';
-import { ReactToPrint } from 'react-to-print';
+import { useNavigate } from 'react-router-dom';
 import {
   CButton,
   CTable,
@@ -13,10 +11,9 @@ import {
   CTableRow,
 } from '@coreui/react-pro';
 
-const InvoiceTable = ({ items }) => {
+const InvoiceTable = ({ items, hanleDeleteInvoice }) => {
   const navigate = useNavigate();
   const componentRef = React.useRef(null);
-  console.log('items: 2', items);
 
   return (
     <Fragment>
@@ -47,6 +44,8 @@ const InvoiceTable = ({ items }) => {
         </CTableHead>
         <CTableBody>
           {items.map((item, index) => {
+            console.log('item: ', item);
+
             return (
               <CTableRow key={index}>
                 <CTableHeaderCell>{index + 1}</CTableHeaderCell>
@@ -73,7 +72,7 @@ const InvoiceTable = ({ items }) => {
                       <FaPen />
                     </CButton>
                     <CButton
-                      onClick={() => console.log(item)}
+                      onClick={() => hanleDeleteInvoice(item._id)}
                       color='primary'
                       variant='outline'
                       shape='square'

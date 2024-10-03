@@ -123,7 +123,8 @@ const router = createBrowserRouter([
             path: 'add-invoice',
             element: <AddInvoice />,
             loader: allClientsLoader3(queryClient),
-          } /*
+          },
+          /*
           {
             path: 'add-job',
             element: <AddJob />,
@@ -158,7 +159,8 @@ const router = createBrowserRouter([
             action: editJobAction(queryClient),
           },
           { path: 'delete-job/:id', action: deleteJobAction(queryClient) },
-           */,
+           */
+          ,
         ],
       },
     ],

@@ -22,8 +22,11 @@ import { useSubmit } from 'react-router-dom';
 import customFetch from '../utils/customFetch';
 import InvoiceTable from './Invoice';
 import CartTable from './Invoice/CartTable';
+import { toast } from 'react-toastify';
+import { useQueryClient } from '@tanstack/react-query';
 
 const InvoiceContainer = () => {
+  const queryClient = useQueryClient();
   const submit = useSubmit();
   const componentRef = React.useRef(null);
   const { data } = useAllInvoicesContext();
@@ -66,6 +69,22 @@ const InvoiceContainer = () => {
     );
     setItems(data.invoices);
   };
+
+  const handleDeleteInvoice = async (id) => {
+    try {
+      const { data } = await customFetch.delete(`/invoices/${id}`);
+      const filtered = items.filter(function (el) {
+        return el._id != id;
+      });
+
+      queryClient.invalidateQueries('invoices');
+      setItems(filtered);
+      toast.success('Invoice deleted successfully');
+    } catch (error) {
+      toast.error(error?.response?.data?.msg);
+    }
+  };
+  console.log('iteös', items);
 
   return (
     <Fragment>
@@ -156,7 +175,10 @@ const InvoiceContainer = () => {
               aria-labelledby='home-tab-pane'
               itemKey={1}
             >
-              <InvoiceTable items={items} />
+              <InvoiceTable
+                hanleDeleteInvoice={handleDeleteInvoice}
+                items={items}
+              />
             </CTabPanel>
             <CTabPanel
               className='py-3'

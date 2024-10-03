@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useLoaderData } from 'react-router-dom';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
 import { FormRow, FormRowSelect, SubmitBtn } from '../components';
@@ -60,6 +60,7 @@ export const loader =
 
 const AddInvoice = () => {
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const { searchValues } = useLoaderData();
   const [startDate, setStartDate] = useState(new Date());
   const { data } = useQuery(allClientsQuery(searchValues));
@@ -151,6 +152,7 @@ const AddInvoice = () => {
       try {
         await customFetch.post('/invoices', invoice);
         toast.success('Invoice added successfully ');
+        queryClient.invalidateQueries('invoices');
         navigate('/dashboard/all-invoices');
       } catch (error) {
         toast.error(error?.response?.data?.msg);

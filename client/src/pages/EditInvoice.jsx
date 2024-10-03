@@ -14,6 +14,7 @@ import { locale } from '../utils/constants';
 import { CButton } from '@coreui/react-pro';
 import styled from 'styled-components';
 import Select from 'react-dropdown-select';
+import moment from 'moment';
 
 const singleInvoiceQuery = (id) => {
   return {
@@ -75,6 +76,7 @@ const EditInvoice = () => {
   } = useQuery(singleInvoiceQuery(id));
   const { data } = useQuery(allClientsQuery());
   const [startDate, setStartDate] = useState(new Date());
+  const [pointDate, setPointDate] = useState('');
   const [invoiceEdit, setInvoiceEdit] = useState({
     barcod: '',
     kg: 1,
@@ -113,7 +115,8 @@ const EditInvoice = () => {
   };
 
   const handleSumbit = async () => {
-    let errors = [];
+    console.log('invoiceEdit. ', invoiceEdit);
+    await customFetch.patch(`/invoices/${id}`, invoiceEdit);
   };
 
   const getClientOptions = (data) => {
@@ -148,6 +151,18 @@ const EditInvoice = () => {
     ];
   };
 
+  const handleDate = (date) => {
+    setPointDate(date);
+    setInvoiceEdit((prev) => {
+      let newDate = moment(date).format('DD.MM.YYYY');
+
+      return {
+        ...prev,
+        invoice_date: newDate,
+      };
+    });
+  };
+
   useEffect(() => {
     const splitted = invoice.invoice_date.split('.');
 
@@ -173,35 +188,35 @@ const EditInvoice = () => {
             name='barcod'
             defaultValue={invoice?.barcod}
             labelText={'Barkod'}
-            //    onChange={(e, o) => onInputChange(e.target, 'barcod')}
+            onChange={(e, o) => onInputChange(e.target, 'barcod')}
           />
           <FormRow
             type='text'
             name='kg'
             labelText={'kg'}
             defaultValue={invoiceEdit.kg}
-            //     onChange={(e, o) => onInputChange(e.target, 'kg')}
+            onChange={(e, o) => onInputChange(e.target, 'kg')}
           />
           <FormRowValue
             type='text'
             name='price'
             labelText={'fiyat'}
             value={invoiceEdit.price}
-            //    onChange={(e, o) => onInputChange(e.target, 'price')}
+            onChange={(e, o) => onInputChange(e.target, 'price')}
           />
           <FormRow
             type='text'
             name='ambalaj_type'
             labelText={'ambalaj türü'}
             defaultValue={invoiceEdit.ambalaj_type}
-            //   onChange={(e, o) => onInputChange(e.target, 'ambalaj_type')}
+            onChange={(e, o) => onInputChange(e.target, 'ambalaj_type')}
           />
           <FormRow
             type='text'
             name='vehicle_number'
             labelText={'Araba numarası'}
             defaultValue={invoiceEdit.vehicle_number}
-            //    onChange={(e, o) => onInputChange(e.target, 'vehicle_number')}
+            onChange={(e, o) => onInputChange(e.target, 'vehicle_number')}
           />
 
           <div>
@@ -224,8 +239,8 @@ const EditInvoice = () => {
             <DatePicker
               name='invoice_date'
               dateFormat='dd.MM.yyyy'
-              selected={invoiceEdit.invoice_date}
-              //   onChange={(date) => handleDate(date)}
+              selected={pointDate === '' ? invoiceEdit.invoice_date : pointDate}
+              onChange={(date) => handleDate(date)}
               locale={locale}
             />
           </div>
