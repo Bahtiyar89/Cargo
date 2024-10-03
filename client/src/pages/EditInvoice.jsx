@@ -146,7 +146,7 @@ const EditInvoice = () => {
     return [
       {
         value: invoiceEdit.receiver_id,
-        label: found.receiver + ' ' + found.address,
+        label: found?.receiver + ' ' + found?.address,
       },
     ];
   };
