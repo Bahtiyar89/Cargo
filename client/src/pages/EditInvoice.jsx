@@ -127,7 +127,7 @@ const EditInvoice = () => {
     let out = clientOptions.map((c) => {
       return {
         key: c._id,
-        label: `${c?.receiver} ${c?.sender_phone} ${c?.address}`,
+        label: `${'c?.receiver'} ${c?.sender_phone} ${c?.address}`,
         value: c._id,
       };
     });
@@ -146,7 +146,7 @@ const EditInvoice = () => {
     return [
       {
         value: invoiceEdit.receiver_id,
-        label: found?.receiver + ' ' + found?.address,
+        label: 'found?.receiver' + ' ' + found?.address,
       },
     ];
   };
