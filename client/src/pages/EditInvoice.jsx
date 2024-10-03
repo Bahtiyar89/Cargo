@@ -142,6 +142,9 @@ const EditInvoice = () => {
     let found = clientOptions.find(
       (element) => element._id === invoiceEdit.receiver_id
     );
+    console.log('found: ,,', found);
+    console.log('clientOptions: ,,', clientOptions);
+    console.log('invoiceEdit: ,,', invoiceEdit);
 
     return [
       {
