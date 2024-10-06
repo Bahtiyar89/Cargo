@@ -23,33 +23,63 @@ const ClientPrint = ({ client, visible, handleVisible }) => {
   const [showPrint, setShowPrint] = useState(false);
   return (
     <CModal
-      size='lg'
+      size='xl'
       backdrop='static'
       visible={visible}
       onClose={() => handleVisible(false)}
       aria-labelledby='StaticBackdropExampleLabel'
     >
       <CModalBody style={{ padding: 10 }} ref={componentRef}>
-        <h3 style={{ textAlign: 'center', padding: 10 }}>
+        <h1
+          style={{
+            textAlign: 'center',
+            padding: 10,
+            textTransform: 'uppercase',
+          }}
+        >
           Magdanly Express Kargo
-        </h3>
+        </h1>
         <CTable bordered>
           <CTableBody>
             <CTableRow>
-              <CTableHeaderCell scope='row'>Alıcı</CTableHeaderCell>
-              <CTableDataCell>{client.receiver}</CTableDataCell>
+              <CTableHeaderCell scope='row' style={{ fontSize: 24 }}>
+                ALICI
+              </CTableHeaderCell>
+              <CTableDataCell
+                style={{ fontSize: 24, textTransform: 'uppercase' }}
+              >
+                {client.receiver}
+              </CTableDataCell>
             </CTableRow>
             <CTableRow>
-              <CTableHeaderCell scope='row'>Gönderen</CTableHeaderCell>
-              <CTableDataCell>{client.sender}</CTableDataCell>
+              <CTableHeaderCell style={{ fontSize: 24 }} scope='row'>
+                GÖNDEREN
+              </CTableHeaderCell>
+              <CTableDataCell
+                style={{ fontSize: 24, textTransform: 'uppercase' }}
+              >
+                {client.sender}
+              </CTableDataCell>
             </CTableRow>
             <CTableRow>
-              <CTableHeaderCell scope='row'>Alıcı tel.</CTableHeaderCell>
-              <CTableDataCell>{client.receiver_phone}</CTableDataCell>
+              <CTableHeaderCell style={{ fontSize: 24 }} scope='row'>
+                ALICI TEL.
+              </CTableHeaderCell>
+              <CTableDataCell
+                style={{ fontSize: 24, textTransform: 'uppercase' }}
+              >
+                {client.receiver_phone}
+              </CTableDataCell>
             </CTableRow>
             <CTableRow>
-              <CTableHeaderCell scope='row'>Adres</CTableHeaderCell>
-              <CTableDataCell>{client.address}</CTableDataCell>
+              <CTableHeaderCell style={{ fontSize: 24 }} scope='row'>
+                ADRES
+              </CTableHeaderCell>
+              <CTableDataCell
+                style={{ fontSize: 24, textTransform: 'uppercase' }}
+              >
+                {client.address}
+              </CTableDataCell>
             </CTableRow>
           </CTableBody>
         </CTable>
