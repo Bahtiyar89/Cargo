@@ -23,7 +23,7 @@ const ClientPrint = ({ client, visible, handleVisible }) => {
   const [showPrint, setShowPrint] = useState(false);
   return (
     <CModal
-      size='xl'
+      size='lg'
       backdrop='static'
       visible={visible}
       onClose={() => handleVisible(false)}
@@ -35,6 +35,7 @@ const ClientPrint = ({ client, visible, handleVisible }) => {
             textAlign: 'center',
             padding: 10,
             textTransform: 'uppercase',
+            fontSize: 30,
           }}
         >
           Magdanly Express Kargo
@@ -97,6 +98,7 @@ const ClientPrint = ({ client, visible, handleVisible }) => {
               </CButton>
             );
           }}
+          pageStyle={{ padding: 20 }}
           content={() => componentRef.current}
           documentTitle='title'
           onBeforePrint={() => {
