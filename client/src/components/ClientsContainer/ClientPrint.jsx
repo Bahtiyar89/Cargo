@@ -23,7 +23,7 @@ const ClientPrint = ({ client, visible, handleVisible }) => {
   const [showPrint, setShowPrint] = useState(false);
   return (
     <CModal
-      size='lg'
+      size='xl'
       backdrop='static'
       visible={visible}
       onClose={() => handleVisible(false)}
@@ -43,7 +43,7 @@ const ClientPrint = ({ client, visible, handleVisible }) => {
         <CTable bordered>
           <CTableBody>
             <CTableRow>
-              <CTableHeaderCell scope='row' style={{ fontSize: 24 }}>
+              <CTableHeaderCell scope='row' style={{ fontSize: 36 }}>
                 ALICI
               </CTableHeaderCell>
               <CTableDataCell
@@ -53,31 +53,31 @@ const ClientPrint = ({ client, visible, handleVisible }) => {
               </CTableDataCell>
             </CTableRow>
             <CTableRow>
-              <CTableHeaderCell style={{ fontSize: 24 }} scope='row'>
+              <CTableHeaderCell style={{ fontSize: 36 }} scope='row'>
                 GÖNDEREN
               </CTableHeaderCell>
               <CTableDataCell
-                style={{ fontSize: 24, textTransform: 'uppercase' }}
+                style={{ fontSize: 36, textTransform: 'uppercase' }}
               >
                 {client.sender}
               </CTableDataCell>
             </CTableRow>
             <CTableRow>
-              <CTableHeaderCell style={{ fontSize: 24 }} scope='row'>
+              <CTableHeaderCell style={{ fontSize: 36 }} scope='row'>
                 ALICI TEL.
               </CTableHeaderCell>
               <CTableDataCell
-                style={{ fontSize: 24, textTransform: 'uppercase' }}
+                style={{ fontSize: 36, textTransform: 'uppercase' }}
               >
                 {client.receiver_phone}
               </CTableDataCell>
             </CTableRow>
             <CTableRow>
-              <CTableHeaderCell style={{ fontSize: 24 }} scope='row'>
+              <CTableHeaderCell style={{ fontSize: 36 }} scope='row'>
                 ADRES
               </CTableHeaderCell>
               <CTableDataCell
-                style={{ fontSize: 24, textTransform: 'uppercase' }}
+                style={{ fontSize: 36, textTransform: 'uppercase' }}
               >
                 {client.address}
               </CTableDataCell>
