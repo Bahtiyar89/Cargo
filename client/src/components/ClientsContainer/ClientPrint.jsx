@@ -100,7 +100,7 @@ const ClientPrint = ({ client, visible, handleVisible }) => {
           }}
           pageStyle={{ padding: 20 }}
           content={() => componentRef.current}
-          documentTitle='title'
+          documentTitle=''
           onBeforePrint={() => {
             return setShowPrint(true);
           }}

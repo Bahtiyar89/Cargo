@@ -43,6 +43,8 @@ const CartTable = ({ items }) => {
         </CTableHead>
         <CTableBody>
           {items.map((item, index) => {
+            console.log('items: ', items);
+
             return (
               <CTableRow key={index}>
                 <CTableHeaderCell>{index + 1}</CTableHeaderCell>
@@ -53,6 +55,10 @@ const CartTable = ({ items }) => {
                   {item?.receiver_id?.receiver +
                     ' ' +
                     item?.receiver_id?.receiver_phone}
+                  <br />
+                  {item?.receiver_id?.sender +
+                    ' ' +
+                    item?.receiver_id?.sender_phone}
                 </CTableDataCell>
                 <CTableDataCell>{item.ambalaj_type}</CTableDataCell>
                 <CTableDataCell>{item.vehicle_number}</CTableDataCell>
