@@ -11,7 +11,7 @@ import FormRowValue from '../components/FormRowValue';
 import DatePicker from 'react-datepicker';
 import { useState } from 'react';
 import { locale } from '../utils/constants';
-import { CButton } from '@coreui/react-pro';
+import { CButton, CFormCheck } from '@coreui/react-pro';
 import styled from 'styled-components';
 import Select from 'react-dropdown-select';
 import moment from 'moment';
@@ -75,7 +75,6 @@ const EditInvoice = () => {
     data: { invoice },
   } = useQuery(singleInvoiceQuery(id));
   const { data } = useQuery(allClientsQuery());
-  const [startDate, setStartDate] = useState(new Date());
   const [pointDate, setPointDate] = useState('');
   const [invoiceEdit, setInvoiceEdit] = useState({
     barcod: '',
@@ -85,6 +84,7 @@ const EditInvoice = () => {
     receiver_id: '',
     vehicle_number: '',
     invoice_date: '',
+    payed: false,
   });
 
   const onInputChange = (o, fieldName) => {
@@ -107,6 +107,9 @@ const EditInvoice = () => {
         case 'receiver_id':
           varTs.receiver_id = o.value;
           break;
+        case 'checkbox':
+          varTs.payed = !o;
+          break;
         default:
           varTs[fieldName] = o.value;
       }
@@ -115,8 +118,10 @@ const EditInvoice = () => {
   };
 
   const handleSumbit = async () => {
-    console.log('invoiceEdit. ', invoiceEdit);
+    console.log('invoiceEdit.2 ', invoiceEdit);
     await customFetch.patch(`/invoices/${id}`, invoiceEdit);
+    toast.success('Müşteri başarıyla güncellendi');
+    return redirect('/dashboard/all-invoices');
   };
 
   const getClientOptions = (data) => {
@@ -142,14 +147,11 @@ const EditInvoice = () => {
     let found = clientOptions.find(
       (element) => element?._id === invoiceEdit?.receiver_id
     );
-    console.log('found: ,,', found);
-    console.log('clientOptions: ,,', clientOptions);
-    console.log('invoiceEdit: ,,', invoiceEdit);
 
     return [
       {
         value: invoiceEdit.receiver_id,
-        label: 'found?.receiver' + ' ' + found?.address,
+        label: found?.receiver + ' ' + found?.address,
       },
     ];
   };
@@ -168,6 +170,9 @@ const EditInvoice = () => {
 
   useEffect(() => {
     const splitted = invoice.invoice_date.split('.');
+    console.log('invoice: :', invoice);
+    console.log('splitted: :', splitted);
+    console.log('splitted: 4:', splitted[2]);
 
     setInvoiceEdit((prev) => ({
       ...prev,
@@ -177,7 +182,8 @@ const EditInvoice = () => {
       ambalaj_type: invoice.ambalaj_type,
       receiver_id: invoice.receiver_id,
       vehicle_number: invoice.vehicle_number,
-      invoice_date: new Date(+splitted[2], splitted[1] - 1, +splitted[0]),
+      payed: invoice.payed,
+      invoice_date: invoice.invoice_date,
     }));
   }, [invoice]);
 
@@ -238,7 +244,7 @@ const EditInvoice = () => {
           <div>
             <p style={{ paddingTop: 5, paddingBottom: 15, fontSize: 14 }}>
               Araba çıkış tarihi
-            </p>
+            </p>{' '}
             <DatePicker
               name='invoice_date'
               dateFormat='dd.MM.yyyy'
@@ -247,6 +253,11 @@ const EditInvoice = () => {
               locale={locale}
             />
           </div>
+          <CFormCheck
+            onChange={() => onInputChange(invoiceEdit.payed, 'checkbox')}
+            checked={invoiceEdit.payed}
+            label='Ödendi'
+          />
           <CButton onClick={handleSumbit} color='primary'>
             Güncelle
           </CButton>

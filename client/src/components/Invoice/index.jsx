@@ -39,6 +39,7 @@ const InvoiceTable = ({ items, hanleDeleteInvoice }) => {
             <CTableHeaderCell scope='col'>Ambalaj tipi</CTableHeaderCell>
             <CTableHeaderCell scope='col'>Araba numarası</CTableHeaderCell>
             <CTableHeaderCell scope='col'>fiyat</CTableHeaderCell>
+            <CTableHeaderCell scope='col'>ödendi</CTableHeaderCell>
             <CTableHeaderCell scope='col'></CTableHeaderCell>
           </CTableRow>
         </CTableHead>
@@ -64,6 +65,7 @@ const InvoiceTable = ({ items, hanleDeleteInvoice }) => {
                 <CTableDataCell>{item.ambalaj_type}</CTableDataCell>
                 <CTableDataCell>{item.vehicle_number}</CTableDataCell>
                 <CTableDataCell>{item.price}</CTableDataCell>
+                <CTableDataCell>{item.payed ? 'evet' : 'hayır'}</CTableDataCell>
                 <CTableDataCell>
                   <Fragment>
                     <CButton

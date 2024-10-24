@@ -7,6 +7,7 @@ const InvoiceSchema = new mongoose.Schema(
     price: String,
     ambalaj_type: String,
     vehicle_number: String,
+    payed: Boolean,
     receiver_id: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Client',

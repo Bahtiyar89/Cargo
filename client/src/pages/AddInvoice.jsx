@@ -13,8 +13,9 @@ import { toast } from 'react-toastify';
 import customFetch from '../utils/customFetch';
 import styled from 'styled-components';
 import FormRowValue from '../components/FormRowValue';
-import { CButton } from '@coreui/react-pro';
+import { CButton, CFormCheck } from '@coreui/react-pro';
 import { locale } from '../utils/constants';
+import './customDatePickerWidth.css';
 
 export const action =
   (queryClient) =>
@@ -71,6 +72,7 @@ const AddInvoice = () => {
     ambalaj_type: '',
     receiver_id: '',
     vehicle_number: '',
+    payed: false,
     invoice_date: moment(new Date()).format('DD.MM.YYYY'),
   });
 
@@ -108,6 +110,9 @@ const AddInvoice = () => {
           break;
         case 'receiver_id':
           varTs.receiver_id = o.value;
+          break;
+        case 'checkbox':
+          varTs.payed = !o;
           break;
         default:
           varTs[fieldName] = o.value;
@@ -217,14 +222,21 @@ const AddInvoice = () => {
             <p style={{ paddingTop: 5, paddingBottom: 15, fontSize: 14 }}>
               Araba çıkış tarihi
             </p>
-            <DatePicker
-              name='invoice_date'
-              dateFormat='dd.MM.yyyy'
-              selected={startDate}
-              onChange={(date) => handleDate(date)}
-              locale={locale}
-            />
+            <div className='customDatePickerWidth'>
+              <DatePicker
+                name='invoice_date'
+                dateFormat='dd.MM.yyyy'
+                selected={startDate}
+                onChange={(date) => handleDate(date)}
+                locale={locale}
+              />
+            </div>
           </div>
+          <CFormCheck
+            onChange={() => onInputChange(invoice.payed, 'checkbox')}
+            checked={invoice.payed}
+            label='Ödendi'
+          />
           <CButton onClick={handleSumbit} color='primary'>
             Kaydet
           </CButton>
