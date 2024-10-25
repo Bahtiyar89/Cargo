@@ -1,13 +1,12 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useLoaderData } from 'react-router-dom';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
-import { FormRow, FormRowSelect, SubmitBtn } from '../components';
+import { FormRow } from '../components';
 import Wrapper from '../assets/wrappers/DashboardFormPage';
-import Select, { components } from 'react-dropdown-select';
-import { JOB_STATUS, JOB_TYPE } from '../../../utils/constants';
+import Select from 'react-dropdown-select';
 import { Form, redirect } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import customFetch from '../utils/customFetch';

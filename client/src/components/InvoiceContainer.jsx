@@ -77,7 +77,7 @@ const InvoiceContainer = () => {
         return el._id != id;
       });
 
-      queryClient.invalidateQueries('invoices');
+      queryClient.invalidateQueries(['invoices']);
       setItems(filtered);
       toast.success('Invoice deleted successfully');
     } catch (error) {

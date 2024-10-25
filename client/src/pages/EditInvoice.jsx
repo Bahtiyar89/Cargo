@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { FormRow, FormRowSelect, SubmitBtn } from '../components';
 import Wrapper from '../assets/wrappers/DashboardFormPage';
 import { useLoaderData, useParams } from 'react-router-dom';
-import { JOB_STATUS, JOB_TYPE } from '../../../utils/constants';
+import { useNavigate } from 'react-router-dom';
 import { Form, redirect } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import customFetch from '../utils/customFetch';
@@ -70,7 +70,7 @@ const allClientsQuery = () => {
 
 const EditInvoice = () => {
   const id = useLoaderData();
-
+  const navigate = useNavigate();
   const {
     data: { invoice },
   } = useQuery(singleInvoiceQuery(id));
@@ -118,10 +118,9 @@ const EditInvoice = () => {
   };
 
   const handleSumbit = async () => {
-    console.log('invoiceEdit.2 ', invoiceEdit);
     await customFetch.patch(`/invoices/${id}`, invoiceEdit);
     toast.success('Müşteri başarıyla güncellendi');
-    return redirect('/dashboard/all-invoices');
+    navigate('/dashboard/all-invoices');
   };
 
   const getClientOptions = (data) => {
@@ -169,11 +168,6 @@ const EditInvoice = () => {
   };
 
   useEffect(() => {
-    const splitted = invoice.invoice_date.split('.');
-    console.log('invoice: :', invoice);
-    console.log('splitted: :', splitted);
-    console.log('splitted: 4:', splitted[2]);
-
     setInvoiceEdit((prev) => ({
       ...prev,
       barcod: invoice.barcod,
@@ -183,7 +177,7 @@ const EditInvoice = () => {
       receiver_id: invoice.receiver_id,
       vehicle_number: invoice.vehicle_number,
       payed: invoice.payed,
-      invoice_date: invoice.invoice_date,
+      invoice_date: new Date(),
     }));
   }, [invoice]);
 
