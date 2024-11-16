@@ -6,6 +6,7 @@ import {
   CButton,
   CTable,
   CTableBody,
+  CTableCaption,
   CTableDataCell,
   CTableHead,
   CTableHeaderCell,
@@ -14,6 +15,15 @@ import {
 
 const CartTable = ({ items }) => {
   const componentRef = React.useRef(null);
+  let totalkg = items.reduce(
+    (accumulator, current) => parseFloat(accumulator) + parseFloat(current.kg),
+    0
+  );
+  let totalprice = items.reduce(
+    (accumulator, current) =>
+      parseFloat(accumulator) + parseFloat(current.price),
+    0
+  );
 
   return (
     <Fragment>
@@ -67,6 +77,9 @@ const CartTable = ({ items }) => {
             );
           })}
         </CTableBody>
+        <CTableCaption>
+          Toplam: {items.length}, kg: {totalkg}, fiyat: {totalprice}
+        </CTableCaption>
       </CTable>
     </Fragment>
   );
